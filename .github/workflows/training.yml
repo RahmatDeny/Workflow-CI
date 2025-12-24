@@ -1,0 +1,44 @@
+name: Training Otomatis
+
+on: [push]
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo (with LFS)
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+
+    - name: Set up Python 3.12.7
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12.7'
+
+    - name: Check environment
+      run: |
+        python --version
+        pip --version
+
+    - name: Install dependencies
+      run: |
+        pip install mlflow pandas numpy scikit-learn tensorflow matplotlib seaborn
+
+    - name: Verify dataset
+      run: |
+        cd MLProject
+        ls -lh dataset_bunga_clean
+        ls -lh dataset_bunga_clean/*.npy
+
+    - name: Run MLflow Project
+      run: |
+        cd MLProject
+        mlflow run . --env-manager=local
+
+    - name: Upload MLflow artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: mlflow-artifacts
+        path: MLProject/mlruns

@@ -1,0 +1,11 @@
+# dataset & binary
+*.npy
+dataset_bunga_clean/
+MLProject/dataset_bunga_clean/
+
+# notebook cache
+.ipynb_checkpoints/
+
+# env
+venv/
+.env
